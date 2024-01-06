@@ -1,10 +1,13 @@
 from collections.abc import Iterator
 from typing import Optional
 
-from youtube.models import Comment, CommentThread
-from youtube.schemas import (CommentThreadFilter,
-                             CommentThreadOptionalParameters,
-                             CommentThreadPart, YouTubeRequest)
+from youtube.models import Comment
+from youtube.schemas import (
+    CommentThreadFilter,
+    CommentThreadOptionalParameters,
+    CommentThreadPart,
+    YouTubeRequest,
+)
 
 from ...extensions import youtube_client
 from ..channel.helpers import find_my_youtube_username
@@ -41,14 +44,29 @@ def list_video_comments(
     return video_comments
 
 
-def list_comment_replies(comment_author: str) -> list[Comment]:
+def list_comment_replies(comment_author: str, video_title: str) -> list[Comment]:
     """List all the replies to a given comment by the given author"""
-    pass
-
-
-def get_author_comments(comment_author: str, video_title: str) -> list[Comment]:
-    """List all the comments by the given author on the given video."""
-    pass
+    comment_author = "@" + comment_author
+    comment_ids: list[str] = list()
+    video_id: str = get_video_id(video_title)
+    part: CommentThreadPart = CommentThreadPart()
+    filter: CommentThreadFilter = CommentThreadFilter(videoId=video_id)
+    optional: CommentThreadOptionalParameters = CommentThreadOptionalParameters(
+        maxResults=30
+    )
+    request: YouTubeRequest = YouTubeRequest(
+        part=part, filter=filter, optional_parameters=optional
+    )
+    comment_iterator: Iterator = youtube_client.get_comments_iterator(request)
+    video_comments: list[Comment] = list()
+    for comment_threads in comment_iterator:
+        for comment_thread in comment_threads:
+            comment: Comment = comment_thread.snippet.top_level_comment
+            if comment.snippet.author.display_name.lower() == comment_author.lower():
+                comment_ids.append(comment.id)
+    for comment_id in comment_ids:
+        video_comments.append(youtube_client.get_comment_replies(comment_id).items[0])
+    return video_comments
 
 
 def comment_on_video(video_title: str, comment: str) -> Comment:
@@ -58,11 +76,27 @@ def comment_on_video(video_title: str, comment: str) -> Comment:
     return comment
 
 
-def comment_on_video(video_title: str, comment: str) -> Comment:
-    """Comment on a video."""
+def reply_to_comment(comment_author: str, video_title: str, comment: str) -> Comment:
+    """Reply to a comment by a given author."""
+    comment_author = "@" + comment_author
+    comment_id: str = None
     video_id: str = get_video_id(video_title)
-    comment: Comment = youtube_client.insert_comment(video_id, comment)
-    return comment
+    part: CommentThreadPart = CommentThreadPart()
+    filter: CommentThreadFilter = CommentThreadFilter(videoId=video_id)
+    optional: CommentThreadOptionalParameters = CommentThreadOptionalParameters(
+        maxResults=30
+    )
+    request: YouTubeRequest = YouTubeRequest(
+        part=part, filter=filter, optional_parameters=optional
+    )
+    comment_iterator: Iterator = youtube_client.get_comments_iterator(request)
+    for comment_threads in comment_iterator:
+        for comment_thread in comment_threads:
+            comment: Comment = comment_thread.snippet.top_level_comment
+            if comment.snippet.author.display_name.lower() == comment_author.lower():
+                comment_id = comment.id
+    comment_reply: Comment = youtube_client.reply_to_comment(comment_id, comment)
+    return comment_reply
 
 
 def find_my_comments(video_title: str) -> list[Comment]:

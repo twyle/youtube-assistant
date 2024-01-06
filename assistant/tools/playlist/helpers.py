@@ -2,9 +2,15 @@ from typing import Iterator, Optional
 
 from thefuzz import fuzz, process
 from youtube.models import Playlist, PlaylistItem, Search
-from youtube.schemas import (CreatePlaylist, CreatePlaylistItem,
-                             CreatePlaylistItemSnippet, CreatePlaylistSnippet,
-                             CreateStatus, VideoResourceId, YouTubeResponse)
+from youtube.schemas import (
+    CreatePlaylist,
+    CreatePlaylistItem,
+    CreatePlaylistItemSnippet,
+    CreatePlaylistSnippet,
+    CreateStatus,
+    VideoResourceId,
+    YouTubeResponse,
+)
 
 from ...extensions import youtube_client
 from ..video.helpers import get_video_id

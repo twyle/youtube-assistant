@@ -1,7 +1,11 @@
 from youtube.models import Channel, Search
-from youtube.schemas import (SearchOptionalParameters, SearchPart,
-                             YouTubeListResponse, YouTubeRequest,
-                             YouTubeResponse)
+from youtube.schemas import (
+    SearchOptionalParameters,
+    SearchPart,
+    YouTubeListResponse,
+    YouTubeRequest,
+    YouTubeResponse,
+)
 
 from ...extensions import youtube_client
 
@@ -17,14 +21,14 @@ def get_channel_details(channel_title: str) -> Channel:
     """Get channel details"""
     channel_id: str = get_channel_id(channel_title)
     response: YouTubeListResponse = youtube_client.find_channel_by_id(channel_id)
-    channel: channel = response.items[0]
+    channel: Channel = response.items[0]
     return channel
 
 
 def get_my_channel_details() -> Channel:
     """Get my channel details"""
     response: YouTubeListResponse = youtube_client.find_my_channel()
-    channel: channel = response.items[0]
+    channel: Channel = response.items[0]
     return channel
 
 

@@ -1,8 +1,7 @@
 import os
 
 from langchain.agents import AgentExecutor, Tool
-from langchain.agents.format_scratchpad import \
-    format_to_openai_function_messages
+from langchain.agents.format_scratchpad import format_to_openai_function_messages
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
 from langchain.chat_models import ChatOpenAI
 from langchain.embeddings import OpenAIEmbeddings
@@ -12,14 +11,22 @@ from langchain.tools.render import format_tool_to_openai_function
 from langchain.vectorstores.faiss import FAISS
 
 from .tools import YouTubeSearchVideoTool
-from .tools.channel import (MyYouTubeChannelDetailsTool,
-                            YouTubeChannelDetailsTool)
-from .tools.comment import (FindMyCommentsTool, FindUserCommentsTool,
-                            ListVideoCommentsTool)
-from .tools.playlist import (CreatePlaylistTool, DeleteYoutubePlaylistsTool,
-                             InsertVideoIntoPlaylistTool,
-                             ListChannelPlaylistsTool, ListPlaylistVideosTool,
-                             ListUserPlaylistsTool)
+from .tools.channel import MyYouTubeChannelDetailsTool, YouTubeChannelDetailsTool
+from .tools.comment import (
+    FindMyCommentsTool,
+    FindUserCommentsTool,
+    ListVideoCommentRepliesTool,
+    ListVideoCommentsTool,
+    ReplyCommentTool,
+)
+from .tools.playlist import (
+    CreatePlaylistTool,
+    DeleteYoutubePlaylistsTool,
+    InsertVideoIntoPlaylistTool,
+    ListChannelPlaylistsTool,
+    ListPlaylistVideosTool,
+    ListUserPlaylistsTool,
+)
 from .tools.video import YouTubeVideoDetailsTool
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
@@ -39,6 +46,8 @@ tools = [
     MyYouTubeChannelDetailsTool(),
     FindUserCommentsTool(),
     FindMyCommentsTool(),
+    ListVideoCommentRepliesTool(),
+    ReplyCommentTool(),
 ]
 
 

@@ -1,7 +1,6 @@
 from typing import Optional, Type
 
-from langchain.callbacks.manager import (AsyncCallbackManagerForToolRun,
-                                         CallbackManagerForToolRun)
+from langchain.callbacks.manager import AsyncCallbackManagerForToolRun, CallbackManagerForToolRun
 from langchain.tools import StructuredTool
 from pydantic import BaseModel, Field
 from youtube.models import Search

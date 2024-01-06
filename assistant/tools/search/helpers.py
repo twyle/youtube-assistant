@@ -1,8 +1,7 @@
 from typing import Optional
 
 from youtube.models import Search
-from youtube.schemas import (SearchOptionalParameters, SearchPart,
-                             YouTubeRequest, YouTubeResponse)
+from youtube.schemas import SearchOptionalParameters, SearchPart, YouTubeRequest, YouTubeResponse
 
 from ...extensions import youtube_client
 

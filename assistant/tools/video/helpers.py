@@ -1,7 +1,11 @@
 from youtube.models import Search, Video
-from youtube.schemas import (SearchOptionalParameters, SearchPart,
-                             YouTubeListResponse, YouTubeRequest,
-                             YouTubeResponse)
+from youtube.schemas import (
+    SearchOptionalParameters,
+    SearchPart,
+    YouTubeListResponse,
+    YouTubeRequest,
+    YouTubeResponse,
+)
 
 from ...extensions import youtube_client
 

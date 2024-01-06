@@ -7,7 +7,7 @@ from assistant.agent import get_agent_executor
 # from assistant.tools.comment.helpers import list_video_comments
 from assistant.agent import get_tools
 from assistant.tools.comment.helpers import (
-    list_video_comments, find_my_comments, find_author_comments
+    list_video_comments, find_my_comments, find_author_comments, list_comment_replies
 )
 from assistant.tools.channel.helpers import find_my_youtube_username
 
@@ -30,6 +30,7 @@ title: str = 'Real Engineering'
 # print(t)
 # print(find_author_comments('Trapping Rain Water - Google Interview Question - Leetcode 42', '@NeetCode'))
 
-query = "Find neetcode comment for the video titled 'Trapping Rain Water - Google Interview Question - Leetcode 42'"
+query = "List all the replies to the comments by neetcode on the video titled 'Trapping Rain Water - Google Interview Question - Leetcode 42'"
 agent_executor = get_agent_executor()
 print(agent_executor.invoke({"input": query})['output'])
+# print(list_comment_replies('neetcode', 'Trapping Rain Water - Google Interview Question - Leetcode 42'))
