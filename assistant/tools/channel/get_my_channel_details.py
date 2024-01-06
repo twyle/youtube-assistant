@@ -1,34 +1,29 @@
-from typing import Optional, Type
+from typing import Optional
 
 from langchain.callbacks.manager import (AsyncCallbackManagerForToolRun,
                                          CallbackManagerForToolRun)
 from langchain.tools import BaseTool
-from pydantic import BaseModel, Field
 from youtube.models import Channel
 
-from .helpers import get_channel_details
+from .helpers import get_my_channel_details
 
 
-class YouTubeChannelDetails(BaseModel):
-    channel_title: str = Field(description="The channel title.")
-
-
-class YouTubeChannelDetailsTool(BaseTool):
-    name = "youtube_channel_details"
+class MyYouTubeChannelDetailsTool(BaseTool):
+    name = "my_youtube_channel_details"
     description = """
-    useful when you need to find out all the details about a youtube channel. This includes 
+    useful when you need to find out all the details about this users youtube channel channel. 
+    For example 'Get the details for my youtube channel". Use this when the channel_title is not provided This includes 
     the description, title, number of subscribers, number of playlists, the number of videos,
      when the channel was created or updated.
     """
-    args_schema: Type[BaseModel] = YouTubeChannelDetails
 
     def _run(
         self,
-        channel_title: str,
+        query: Optional[str] = None,
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         """Use the tool."""
-        channel: Channel = get_channel_details(channel_title)
+        channel: Channel = get_my_channel_details()
         return {
             "id": channel.id,
             "title": channel.snippet.title,

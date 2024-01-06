@@ -1,3 +1,5 @@
 oryks-youtube==0.10.0
 chainlit==0.7.700
 thefuzz==0.20.0
+tiktoken==0.5.2
+faiss-cpu==1.7.4

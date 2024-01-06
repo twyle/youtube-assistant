@@ -1,18 +1,20 @@
+from typing import Optional, Type
+
+from langchain.callbacks.manager import (AsyncCallbackManagerForToolRun,
+                                         CallbackManagerForToolRun)
 from langchain.tools import StructuredTool
 from pydantic import BaseModel, Field
-from typing import Optional, Type
-from langchain.callbacks.manager import (
-    AsyncCallbackManagerForToolRun,
-    CallbackManagerForToolRun,
-)
-from .helpers import add_video_to_playlist
 from youtube.models import PlaylistItem
+
+from .helpers import add_video_to_playlist
 
 
 class InsertVideoIntoPlaylist(BaseModel):
-    video_title: str = Field(description='The video title.')
-    playlist_title: str = Field(description='The playlist title.')
-    position: Optional[int] = Field(description='The position to insert the video into.')
+    video_title: str = Field(description="The video title.")
+    playlist_title: str = Field(description="The playlist title.")
+    position: Optional[int] = Field(
+        description="The position to insert the video into."
+    )
 
 
 class InsertVideoIntoPlaylistTool(StructuredTool):
@@ -25,26 +27,26 @@ class InsertVideoIntoPlaylistTool(StructuredTool):
     args_schema: Type[BaseModel] = InsertVideoIntoPlaylist
 
     def _run(
-        self, 
+        self,
         video_title: str,
-        playlist_title: str, 
+        playlist_title: str,
         position: Optional[int] = 0,
-        run_manager: Optional[CallbackManagerForToolRun] = None
+        run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         """Use the tool."""
         playlist_item: PlaylistItem = add_video_to_playlist(video_title, playlist_title)
         return {
-            'playlist title': playlist_title,
-            'video title': video_title,
-            'position': position
+            "playlist title": playlist_title,
+            "video title": video_title,
+            "position": position,
         }
 
     async def _arun(
-        self, 
+        self,
         video_id: str,
-        playlist_id: str, 
-        position: Optional[int] = None, 
-        run_manager: Optional[AsyncCallbackManagerForToolRun] = None
+        playlist_id: str,
+        position: Optional[int] = None,
+        run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
     ) -> str:
         """Use the tool asynchronously."""
         raise NotImplementedError("YouTubeVideoSearchTool does not support async")

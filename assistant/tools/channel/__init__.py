@@ -1,1 +1,2 @@
 from .get_channel_details import YouTubeChannelDetailsTool
+from .get_my_channel_details import MyYouTubeChannelDetailsTool
